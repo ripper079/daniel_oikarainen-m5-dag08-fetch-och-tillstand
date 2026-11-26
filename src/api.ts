@@ -44,6 +44,14 @@ export async function hamtaMeny(fetchFn: FetchFn = fetch): Promise<Ratt[]> {
 //    Saknas data.current: kasta new Error("Oväntat svar från väder-API:et").
 export async function hamtaVader(lat: number, lon: number, fetchFn: FetchFn = fetch): Promise<Vader> {
   // TODO
+  const dataResponse =  await hamtaJson(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`, fetchFn);
+  if (!dataResponse.current) throw new Error("Oväntat svar från väder-API:et");
+  
+  return {
+    temperatur: dataResponse.current.temperature_2m,
+    vindhastighet: dataResponse.current.wind_speed_10m,
+    kod: dataResponse.current.weather_code,
+  }
 }
 
 // 4. Översätt en väderkod (WMO) till svensk text:
