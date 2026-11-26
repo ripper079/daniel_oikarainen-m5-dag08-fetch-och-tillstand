@@ -30,6 +30,11 @@ export async function hamtaJson(url: string, fetchFn: FetchFn = fetch): Promise<
 //    Är svaret inte en array: kasta new Error("Menyn hade ett oväntat format").
 export async function hamtaMeny(fetchFn: FetchFn = fetch): Promise<Ratt[]> {
   // TODO
+  const listMenu = await hamtaJson("data/meny.json", fetchFn);
+  //Kolla om det verkligen är en array
+  if (! Array.isArray(listMenu)) throw new Error("Menyn hade ett oväntat format");
+
+  return listMenu;
 }
 
 // 3. Hämta aktuellt väder från Open-Meteo.
